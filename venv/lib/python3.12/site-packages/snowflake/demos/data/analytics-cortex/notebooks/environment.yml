@@ -1,0 +1,7 @@
+name: app_environment
+channels:
+  - snowflake
+dependencies:
+  - seaborn=*
+  - snowflake-ml-python=*
+  - snowflake-snowpark-python=*

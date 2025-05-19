@@ -1,0 +1,27 @@
+# Environment files
+.env
+.env.*        # .env.local, .env.production, etc.
+*.env         # catch any other .env files
+
+# Node.js (if applicable)
+node_modules/
+
+# Python (if applicable)
+__pycache__/
+*.pyc
+*.pyo
+
+# MacOS
+.DS_Store
+
+# Logs
+*.log
+
+# IDEs
+.vscode/
+.idea/
+
+# Build and dist
+dist/
+build/
+conections.toml

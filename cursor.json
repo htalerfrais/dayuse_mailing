@@ -1,0 +1,3 @@
+{
+    "exclude": ["secret_config.py", "path/to/sensitive_dir/**"]
+  }

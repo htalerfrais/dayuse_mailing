@@ -1,0 +1,9 @@
+name: app_environment
+channels:
+  - snowflake
+dependencies:
+  - altair
+  - imbalanced-learn
+  - numpy
+  - pandas
+  - snowflake-ml-python

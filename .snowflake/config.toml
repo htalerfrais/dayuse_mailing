@@ -1,0 +1,12 @@
+default_connection_name = "default"
+
+[connections.default]
+account = "qm63465.eu-west-1"
+user = "HECTOR_TF"
+password = "tetdyv-Jovto6-totnix"
+warehouse = "AI_WH"
+database = "DAYUSE_ANALYTICS"
+schema = "STREAMLIT_APPS"
+
+host = "qm63465.eu-west-1.snowflakecomputing.com"
+role = "DEV_ROLE"

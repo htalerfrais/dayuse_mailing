@@ -1,0 +1,2 @@
+DROP DATABASE tb_voc;
+DROP WAREHOUSE tasty_ds_wh;

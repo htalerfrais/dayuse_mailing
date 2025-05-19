@@ -1,0 +1,17 @@
+demo_name,title,num_steps
+analysis-churn-notebooks,Data Analysis and Churn Prediction Using Snowflake Notebooks,2
+analytics-cortex,Customer Reviews Analytics using Snowflake Cortex,1
+anthropic-cortex,Getting Started with Anthropic on Snowflake Cortex,1
+external-access-nb,Access External Endpoints,1
+get-started-partitioned-models,Getting Started with Partitioned Models and Snowflake Model Registry,1
+get-started-snowapi-nb,Creating Snowflake Objects using Python API,1
+get-started-snowflake-ml,Getting Started with Snowflake ML,4
+get-started-snowpark-ws-nb,Getting Started with Snowpark in Snowflake Notebooks and Python Worksheets,1
+ingest-json-data,Ingest Public JSON,1
+intro-snowpark-pandas,Intro to Snowpark pandas,1
+intro-to-feature-store-nb,Introduction to Feature Store using Snowflake Notebooks,1
+intro-to-snowflake-nb,My First Notebook Project,1
+load-csv-to-stage,Load CSV from S3,1
+ref-cells-and-vars,Reference Cells and Variables,1
+visual-data-stories,Visual Data Stories with Snowflake Notebooks,1
+working-with-files,Working with Files,1
