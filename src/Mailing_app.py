@@ -267,6 +267,7 @@ def generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_templa
             'customer_name': customer_name,
             'mail': email_content
         }
+        
         generated_mails.append(mail_data)
         
         # Save email to file if output directory is provided
@@ -279,7 +280,7 @@ def generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_templa
             with open(filepath, 'w') as f:
                 json.dump(mail_data, f, indent=4)
             print(f"Email saved to {filepath}")
-        
+    
     return generated_mails
 
 
@@ -310,16 +311,43 @@ def main():
     output_dir = create_email_output_directory()
     print(f"Emails will be saved to: {output_dir}")
 
+    # Initialize timing metrics
+    timing_metrics = {}
+
     # get the target customers
+    start_time = datetime.datetime.now()
     query_exec_result_target_customer = get_target_customers(prompt_template_target_customer)
+    end_time = datetime.datetime.now()
+    timing_metrics['get_target_customers'] = (end_time - start_time).total_seconds()
+    print(f"Time to get target customers: {timing_metrics['get_target_customers']} seconds")
 
     # get the hotel recommendations
+    start_time = datetime.datetime.now()
     list_ids_rec = get_hotel_recommendations(prompt_template_recommand, query_exec_result_target_customer)
+    end_time = datetime.datetime.now()
+    timing_metrics['get_hotel_recommendations'] = (end_time - start_time).total_seconds()
+    print(f"Time to get hotel recommendations: {timing_metrics['get_hotel_recommendations']} seconds")
 
     # generate the batch mail and save to files
+    start_time = datetime.datetime.now()
     generated_mails = generate_batch_mail(list_ids_rec, prompt_template_mail, prompt_template_SQL, system_prompt, output_dir=output_dir)
+    end_time = datetime.datetime.now()
+    timing_metrics['generate_batch_mail'] = (end_time - start_time).total_seconds()
+    print(f"Time to generate emails: {timing_metrics['generate_batch_mail']} seconds")
+    
+    # Add timing metrics to each file
+    for mail_data in generated_mails:
+        mail_data['timing_metrics'] = timing_metrics
+        if output_dir:
+            customer_id = mail_data['customer_id']
+            customer_name = mail_data['customer_name']
+            filename = f"{customer_id}_{customer_name.replace(' ', '_')}.json"
+            filepath = os.path.join(output_dir, filename)
+            with open(filepath, 'w') as f:
+                json.dump(mail_data, f, indent=4)
 
     print(f"Generated {len(generated_mails)} emails. Saved to {output_dir}")
+    print(f"Timing metrics: {timing_metrics}")
 
 
 if __name__ == "__main__":
