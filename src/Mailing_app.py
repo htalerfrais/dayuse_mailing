@@ -5,9 +5,15 @@ import json
 import requests
 import pandas as pd
 from typing import Dict, List, Optional, Tuple, Union
-from utils import prompt_templates
+import utils.prompt_templates as prompt_templates
+import openai
+import datetime
+import pathlib
+
 
 load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 # Panda settings
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
@@ -202,7 +208,7 @@ def get_hotel_recommendations(prompt_template_recommand, query_exec_result_targe
 
 
 
-def generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_template_SQL, system_prompt):
+def generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_template_SQL, system_prompt, output_dir=None):
     # sql template mail is the sql query calling llm where we have to put the prompt 
     # prompt template mail is the template of the prompt sent to the llm where we have to add customer and hotel info
     # list_customer_hotel contains the customer info and hotel recommendations
@@ -256,14 +262,40 @@ def generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_templa
         email_content = response_json["choices"][0]["messages"]
         
         # Add to generated emails
-        generated_mails.append({
+        mail_data = {
             'customer_id': customer_id,
             'customer_name': customer_name,
             'mail': email_content
-        })
+        }
+        generated_mails.append(mail_data)
+        
+        # Save email to file if output directory is provided
+        if output_dir:
+            # Create a filename based on customer info
+            filename = f"{customer_id}_{customer_name.replace(' ', '_')}.json"
+            filepath = os.path.join(output_dir, filename)
+            
+            # Save the email content as JSON
+            with open(filepath, 'w') as f:
+                json.dump(mail_data, f, indent=4)
+            print(f"Email saved to {filepath}")
         
     return generated_mails
 
+
+def create_email_output_directory():
+    """Create a timestamped directory for email storage"""
+    # Get current date and time
+    now = datetime.datetime.now()
+    timestamp = now.strftime("%Y-%m-%d_%H-%M-%S")
+    
+    # Create directory path
+    dir_path = os.path.join("gen_mails", f"gen_mail_{timestamp}")
+    
+    # Create directory if it doesn't exist
+    os.makedirs(dir_path, exist_ok=True)
+    
+    return dir_path
 
 
 def main():
@@ -274,16 +306,20 @@ def main():
     system_prompt = prompt_templates.system_prompt
     prompt_template_SQL = prompt_templates.prompt_template_SQL
 
+    # Create output directory for emails
+    output_dir = create_email_output_directory()
+    print(f"Emails will be saved to: {output_dir}")
+
     # get the target customers
     query_exec_result_target_customer = get_target_customers(prompt_template_target_customer)
 
     # get the hotel recommendations
     list_ids_rec = get_hotel_recommendations(prompt_template_recommand, query_exec_result_target_customer)
 
-    # generate the batch mail
-    generated_mails = generate_batch_mail(list_ids_rec, prompt_template_mail, prompt_template_SQL, system_prompt)
+    # generate the batch mail and save to files
+    generated_mails = generate_batch_mail(list_ids_rec, prompt_template_mail, prompt_template_SQL, system_prompt, output_dir=output_dir)
 
-    print(generated_mails)
+    print(f"Generated {len(generated_mails)} emails. Saved to {output_dir}")
 
 
 if __name__ == "__main__":
