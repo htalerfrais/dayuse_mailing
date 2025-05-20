@@ -49,7 +49,7 @@ cur = conn.cursor()
 
 
 
-# ------------------------------------------------------------------------------------------------
+# -------------------------------------------- LLM part ------------------------------------------
 
 def complete_prompts(prompt_template, sql_template, placeholder_value):
     # une fonction qui retourne une sql query constitué du prompt template complété par le placeholder et du system prompt
@@ -60,11 +60,18 @@ def complete_prompts(prompt_template, sql_template, placeholder_value):
 
 
 
+def openai_llm_call(prompt: str):
+    response = openai.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response.choices[0].message.content
+
+
 # ------------------------------------------------------------------------------------------------
 
 
 def get_analyst_response(conv: List[Dict]):
-
     request_body = {
         "messages": conv,
         "semantic_model_file": f"@{AVAILABLE_SEMANTIC_MODELS_PATHS[0]}",
@@ -97,6 +104,14 @@ def get_query_exec_result(analyst_response_json : dict):
     sql_query = ""
     sql_confidence = ""
     thought = ""
+    
+    # Check if there's an error in the API response
+    if analyst_response_json.get('message') is None:
+        error_msg = f"API Error: {analyst_response_json.get('error_code')} - Request ID: {analyst_response_json.get('request_id')}"
+        print(error_msg)
+        # Return empty DataFrame with error message as thought
+        return [error_msg, "", "", pd.DataFrame()]
+    
     content = analyst_response_json['message']['content']
     for item in content :
         if item['type'] == "sql":
@@ -105,13 +120,14 @@ def get_query_exec_result(analyst_response_json : dict):
         elif item['type'] == "text":
             thought = item["text"]
     
-    global session
     try:
-        df = cur.execute(sql_query).fetchall()
+        df = cur.execute(sql_query).fetch_pandas_all()
         query_exec_result = [thought, sql_query, sql_confidence, df]
         return query_exec_result
-    except SnowparkSQLException as e:
-        return str(e)
+    except Exception as e:
+        error_msg = f"SQL Error: {str(e)}"
+        print(error_msg)
+        return [thought, sql_query, sql_confidence, pd.DataFrame()]
     
 
 
@@ -142,11 +158,18 @@ def create_sql_llm_query(sql_template, placeholder, system_prompt):
 # ----------------------------------- Utils iterate function --------------------------------------
 
 
-def process_customer_ids(customer_tuples, prompt_template_reco):
+def process_customer_ids(customer_df, prompt_template_reco):
     # gives hotel recommendation for each customer id
+    # customer_df is a dataframe
     hotel_reco = []
-    for i, (customer_id, customer_name) in enumerate(customer_tuples):
-        print(f"Processing customer {i}: {customer_id} ({customer_name})")
+    for i, row in customer_df.iterrows():
+        customer_id = row['CUSTOMER_ID']
+        
+        # Format all customer information (excluding customer_id) as a string
+        customer_info_dict = row.drop('CUSTOMER_ID').to_dict()
+        customer_info = ', '.join([f"{key}: {value}" for key, value in customer_info_dict.items()])
+        
+        print(f"Processing customer {i}: {customer_id}")
         
         # create the payload for a customer id
         placeholder_reco = prompt_template_reco.format(customer_id=customer_id)
@@ -155,7 +178,7 @@ def process_customer_ids(customer_tuples, prompt_template_reco):
         
         # get response: hotel to recommend
         analyst_response_reco = get_analyst_response(payload_reco)
-        print(f"Analyst response for hotel recommendation for customer {i}: {customer_id} ({customer_name}): \n {analyst_response_reco}")
+        print(f"Analyst response for hotel recommendation for customer {i}: {customer_id}: \n {analyst_response_reco}")
         query_exec_result_hotel_reco = get_query_exec_result(analyst_response_reco)
         
         # query_exec_result = [thought, sql_query, sql_confidence, df] for hotel reco
@@ -168,7 +191,7 @@ def process_customer_ids(customer_tuples, prompt_template_reco):
 
         hotel_reco.append({
             'customer_id': customer_id,
-            'customer_name': customer_name,
+            'customer_information': customer_info,
             'hotel_recommendation': query_exec_result_hotel_reco[3]
         })
 
@@ -184,20 +207,24 @@ def get_target_customers(prompt_template_target_customer):
     payload_target_customer = create_user_payload(prompt_template_target_customer)
     analyst_response_target_customer = get_analyst_response(payload_target_customer)
     query_exec_result_target_customer = get_query_exec_result(analyst_response_target_customer)
+    print("---------- customer targets ----------")
+    print(f"query_exec_result_target_customer entire result: \n{query_exec_result_target_customer}\n")
     print(f"df customer targets: \n{query_exec_result_target_customer[3]}\n")
-
-    return query_exec_result_target_customer
+    print(f"df customer targets type: \n{type(query_exec_result_target_customer[3])}\n")
+    print("--------------------------------------")
+    return query_exec_result_target_customer[3]
 
 
 
 def get_hotel_recommendations(prompt_template_recommand, query_exec_result_target_customer):
+    ###### to delete ???????
     """
     Args : 
     prompt_template_recommand : prompt telling how to retrieve the hotels to recommand to each customer and the informations to retrieve
     query_exec_result_target_customer : result of the query that retrieves the customer ids and the first names of the customers
     
     Returns : 
-    list_ids_rec : list of customer ids and the hotel recommendations corresponding 
+    list_ids_rec : list of dicts with customer ids and customer information and the hotel recommendations corresponding 
     """
 
     # get the hotel recommendations for the target customers
@@ -208,63 +235,50 @@ def get_hotel_recommendations(prompt_template_recommand, query_exec_result_targe
 
 
 
-def generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_template_SQL, system_prompt, output_dir=None):
+def generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_template_SQL, system_prompt, output_dir=None, snowflake_llm=True):
     # sql template mail is the sql query calling llm where we have to put the prompt 
     # prompt template mail is the template of the prompt sent to the llm where we have to add customer and hotel info
     # list_customer_hotel contains the customer info and hotel recommendations
-    
+    # snowflake_llm is a boolean to choose if we use snowflake llm or openai llm
+
     generated_mails = []
-    for customer_data in list_customer_hotel:
-        # Extract customer information
-        customer_id = customer_data["customer_id"]
-        customer_name = customer_data["customer_name"]
-        hotel_recommendations = customer_data["hotel_recommendation"]
+    for elt in list_customer_hotel:
+        customer_id = elt["customer_id"]
+        customer_information = elt["customer_information"]
+        hotel_recommendations = elt["hotel_recommendation"]
         
-        # Format hotel recommendations for better readability in the prompt
-        formatted_hotels = ""
-        for i, hotel_info in enumerate(hotel_recommendations):
-            formatted_hotels += f"Hotel {i+1}:\n"
-            # Handle different tuple formats by checking length and types
-            for j, item in enumerate(hotel_info):
-                if j == 0:
-                    formatted_hotels += f"- Name: {item}\n"
-                elif isinstance(item, int) and item <= 5:
-                    formatted_hotels += f"- Stars: {item}\n"
-                elif ":" in str(item):  # Time slot typically contains colons
-                    formatted_hotels += f"- Time Slot: {item}\n"
-                else:
-                    formatted_hotels += f"- Room Type: {item}\n"
-            formatted_hotels += "\n"
-        
-        # Prepare customer info including name
-        customer_info = f"Customer ID: {customer_id}, Name: {customer_name}"
-        
-        # Prepare the payload for the LLM
         completed_mail_prompt = prompt_template_mail.format(
-            hotel_info=formatted_hotels,
-            customer_info=customer_info
+            hotel_info=hotel_recommendations,
+            customer_info=customer_information
         )
-        completed_sql_llm_query = create_sql_llm_query(
-            prompt_template_SQL, 
-            completed_mail_prompt, 
-            system_prompt=system_prompt
-        )
+
+        if snowflake_llm:
+            # Generate the email for this customer with snowflake sql querying a llm
+            completed_sql_llm_query = create_sql_llm_query(
+                prompt_template_SQL, 
+                completed_mail_prompt, 
+                system_prompt=system_prompt
+            )
+
+            result = cur.execute(completed_sql_llm_query).fetch_pandas_all()
+            print(f"result: \n{result}\n")
+            response_str = result[0][0]
+            
+            # Parse the JSON inside the string
+            response_json = json.loads(response_str)
+            
+            # Extract the email content
+            email_content = response_json["choices"][0]["messages"]
         
-        # Generate the email for this customer
-        result = cur.execute(completed_sql_llm_query).fetchall()
-        print(result)
-        response_str = result[0][0]
-        
-        # Parse the JSON inside the string
-        response_json = json.loads(response_str)
-        
-        # Extract the email content
-        email_content = response_json["choices"][0]["messages"]
-        
+        else:
+            # Generate the email for this customer with openai llm
+            email_content = openai_llm_call(completed_mail_prompt)
+
+
         # Add to generated emails
         mail_data = {
             'customer_id': customer_id,
-            'customer_name': customer_name,
+            'customer_information': customer_information,
             'mail': email_content
         }
         
@@ -273,7 +287,7 @@ def generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_templa
         # Save email to file if output directory is provided
         if output_dir:
             # Create a filename based on customer info
-            filename = f"{customer_id}_{customer_name.replace(' ', '_')}.json"
+            filename = f"{customer_id}_{customer_information.replace(' ', '_')}.json"
             filepath = os.path.join(output_dir, filename)
             
             # Save the email content as JSON
@@ -323,14 +337,17 @@ def main():
 
     # get the hotel recommendations
     start_time = datetime.datetime.now()
-    list_ids_rec = get_hotel_recommendations(prompt_template_recommand, query_exec_result_target_customer)
+    list_customer_hotel = process_customer_ids(query_exec_result_target_customer, prompt_template_recommand)
+    print("---------- list_customer_hotel ----------")
+    print(f"list_customer_hotel: \n{list_customer_hotel}\n")
+    print("----------------------------------------")
     end_time = datetime.datetime.now()
     timing_metrics['get_hotel_recommendations'] = (end_time - start_time).total_seconds()
     print(f"Time to get hotel recommendations: {timing_metrics['get_hotel_recommendations']} seconds")
 
     # generate the batch mail and save to files
     start_time = datetime.datetime.now()
-    generated_mails = generate_batch_mail(list_ids_rec, prompt_template_mail, prompt_template_SQL, system_prompt, output_dir=output_dir)
+    generated_mails = generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_template_SQL, system_prompt, output_dir=output_dir, snowflake_llm=False)
     end_time = datetime.datetime.now()
     timing_metrics['generate_batch_mail'] = (end_time - start_time).total_seconds()
     print(f"Time to generate emails: {timing_metrics['generate_batch_mail']} seconds")
@@ -340,8 +357,8 @@ def main():
         mail_data['timing_metrics'] = timing_metrics
         if output_dir:
             customer_id = mail_data['customer_id']
-            customer_name = mail_data['customer_name']
-            filename = f"{customer_id}_{customer_name.replace(' ', '_')}.json"
+            customer_information = mail_data['customer_information']
+            filename = f"{customer_id}_{customer_information.replace(' ', '_')}.json"
             filepath = os.path.join(output_dir, filename)
             with open(filepath, 'w') as f:
                 json.dump(mail_data, f, indent=4)

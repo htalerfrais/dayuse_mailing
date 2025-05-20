@@ -1,0 +1,10 @@
+{
+    "customer_id": 3445127,
+    "customer_name": "Jean",
+    "mail": "Subject: Hotel Recommendations for Your Upcoming Stay\n\nDear Jean,\n\nI hope this message finds you well. I would like to recommend two excellent hotel options based on the information available:\n\n1. **Le Lodge Brit H\u00f4tel Strasbourg**  \n   - Room Type: Chambre double standard  \n   - Stars: 4  \n   - Available Time Slot: 11:00 - 17:00  \n\n2. **Mondrian Seoul Itaewon \ubaac\ub4dc\ub9ac\uc548 \uc11c\uc6b8 \uc774\ud0dc\uc6d0**  \n   - Room Type: \uc774\ud0dc\uc6d0 \ud0b9  \n   - Stars: 5  \n   - Available Time Slot: 11:00 - 18:00  \n\nPlease let me know if you would like more details or assistance with booking.\n\nBest regards,  \n[Your Name]",
+    "timing_metrics": {
+        "get_target_customers": 26.307748,
+        "get_hotel_recommendations": 22.261442,
+        "generate_batch_mail": 4.309906
+    }
+}

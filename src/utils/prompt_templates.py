@@ -11,11 +11,11 @@ CUSTOMER INFORMATION :
 Additionnal instructioin : 
 You should only rely on the informations that you explicitelly know from the HOTEL INFORMATION. 
 And only rely on the information present in CUSTOMER INFORMATION. Do not hallucinate data that is not in those sections.
-I want you to call the customer by its first name.  
+I want you to call the customer by its first name, and to use the language of the customer to write the email.
 """
 
-prompt_target_customer = """Give me 1 customer_id of customer that went in a hotel in Paris, France during the past 7 days. 
-For this customer ID, also give the first name of the customer.
+prompt_target_customer = """Give me 2 customer_ids of customer that went in a hotel in Paris, France during the past 7 days.
+For these customer IDs, also give the first name of the customer, and its language.
 """
 
 # May use a ML model for the recommandatioin later instead of this SQL query
