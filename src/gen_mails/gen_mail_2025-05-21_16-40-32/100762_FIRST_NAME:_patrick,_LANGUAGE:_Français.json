@@ -1,0 +1,10 @@
+{
+    "customer_id": 100762,
+    "customer_information": "FIRST_NAME: patrick, LANGUAGE: Français",
+    "mail": "Objet : Recommandation d'hôtels pour vos séjours en day-use\n\nBonjour Patrick,\n\nJe me permets de vous recommander deux excellents hôtels disponibles en réservation day-use le 22 mai 2025 :\n\n1. Novotel Surfers Paradise  \n   - Horaires : de 10h00 à 17h00  \n   - Type de chambre : Superior Twin Room - 2 lits doubles  \n   - Réservez ici : https://dayuse.com/hotels/australia/novotel-surfers-paradise\n\n2. Novotel Amsterdam Schiphol Airport  \n   - Horaires : de 9h00 à 17h00  \n   - Type de chambre : Superior Vierpersoonskamer - chambres avec 2 lits doubles  \n   - Réservez ici : https://dayuse.com/hotels/netherlands/novotel-amsterdam-schiphol-airport\n\nCes deux options offrent un confort optimal pour une utilisation en journée. N’hésitez pas à consulter les liens pour plus d’informations ou pour effectuer une réservation.\n\nBonne journée à vous,  \nCordialement,  \n[Votre Nom]",
+    "timing_metrics": {
+        "get_target_customers": 32.718046,
+        "get_hotel_recommendations": 53.924683,
+        "generate_batch_mail": 19.248381
+    }
+}

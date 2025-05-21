@@ -1,0 +1,10 @@
+{
+    "customer_id": 3507403,
+    "customer_information": "FIRST_NAME: MURIEL, LANGUAGE: Français",
+    "mail": "Objet : Suggestions d'hôtels pour votre séjour\n\nBonjour Muriel,\n\nJe souhaitais vous recommander deux hôtels disponibles à la date du 28 mai 2025, avec des créneaux horaires de 11h00 à 17h00.\n\n1. Hotel Movida  \n- Chambre : Camera Doppia Deluxe  \n- Étoiles : 3  \n- Prix : 32,00 €  \n- Plus d’informations : https://dayuse.com/hotels/italy/hotel-movida\n\n2. The Tudor Inn Hotel  \n- Chambre : Deluxe Double Room  \n- Étoiles : 3  \n- Prix : 40,00 €  \n- Plus d’informations : https://dayuse.com/hotels/united-kingdom/the-tudor-inn-hotel\n\nN’hésitez pas à consulter ces liens pour plus de détails et à choisir celui qui vous convient le mieux.\n\nBien cordialement,  \n[Votre Nom]",
+    "timing_metrics": {
+        "get_target_customers": 33.185263,
+        "get_hotel_recommendations": 22.87586,
+        "generate_batch_mail": 6.199668
+    }
+}

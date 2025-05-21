@@ -1,0 +1,10 @@
+{
+    "customer_id": 7547050,
+    "customer_information": "FIRST_NAME: Roberto , LANGUAGE: Français",
+    "mail": "Objet : Recommandation d’hôtels pour votre séjour à Paris\n\nBonjour Roberto,\n\nJe me permets de vous recommander deux hôtels disponibles pour une réservation le 28 mai 2025, avec des créneaux horaires de 11h00 à 19h00. Voici les détails :\n\n1. Hôtel Eden Paris  \n   - Chambre double Classique avec accès au Spa  \n   - Réservation possible le 28 mai 2025  \n   - Plus d’informations et réservation : https://dayuse.com/hotels/france/hotel-eden-paris\n\n2. Pullman Paris Centre - Bercy  \n   - Chambre King Standard  \n   - Réservation possible le 28 mai 2025  \n   - Plus d’informations et réservation : https://dayuse.com/hotels/france/pullman-paris-centre-bercy\n\nN’hésitez pas à consulter les liens pour en savoir plus et procéder à la réservation.\n\nCordialement,  \n[Votre Nom]",
+    "timing_metrics": {
+        "get_target_customers": 25.472618,
+        "get_hotel_recommendations": 60.202085,
+        "generate_batch_mail": 9.113574
+    }
+}

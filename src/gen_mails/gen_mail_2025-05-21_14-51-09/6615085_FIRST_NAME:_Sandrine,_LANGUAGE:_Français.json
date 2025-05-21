@@ -1,0 +1,10 @@
+{
+    "customer_id": 6615085,
+    "customer_information": "FIRST_NAME: Sandrine, LANGUAGE: Français",
+    "mail": "Objet : Recommandations d'hôtels pour votre séjour  \n\nBonjour Sandrine,  \n\nJe me permets de vous recommander deux hôtels disponibles pour votre séjour le 21 mai 2025, avec des plages horaires de 10h00 à 15h00.  \n\n1. **Kyriad Tarbes**  \n- Chambre Double + Accès Parking  \n- Prix : 38 €  \n- Note : 3 étoiles  \n- Réservation possible via ce lien : [Kyriad Tarbes](https://dayuse.com/hotels/france/campanile-tarbes)  \n\n2. **Kyriad Direct Arras - Saint-Laurent-Blangy - Parc Expo**  \n- Chambre Double Standard  \n- Prix : 40 €  \n- Note : 2 étoiles  \n- Réservation possible via ce lien : [Kyriad Direct Arras](https://dayuse.com/hotels/france/kyriad-direct-arras-saint-laurent-blangy-parc-expo)  \n\nN’hésitez pas à me contacter si vous souhaitez plus d’informations.  \n\nCordialement,  \n[Votre Nom]",
+    "timing_metrics": {
+        "get_target_customers": 26.790985,
+        "get_hotel_recommendations": 21.926361,
+        "generate_batch_mail": 5.303606
+    }
+}

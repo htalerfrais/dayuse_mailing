@@ -1,0 +1,10 @@
+{
+    "customer_id": 7547050,
+    "customer_information": "FIRST_NAME: Roberto , LANGUAGE: Français",
+    "mail": "Objet : Recommandations d’hôtels pour vos prochaines réservations\n\nBonjour Roberto,\n\nJe me permets de vous recommander deux hôtels disponibles pour une réservation en journée, avec les détails suivants :\n\n1. Grand Mercure Singapore Roxy  \n   - Horaire : 12h00 - 18h00  \n   - Type de chambre : Deluxe King Room avec vue sur la piscine  \n   - Date de réservation : 28 mai 2025  \n   - Lien de l’offre : [Réserver ici](https://dayuse.com/hotels/singapore/grand-mercure-singapore-roxy)\n\n2. Millennium Downtown New York  \n   - Horaire : 12h00 - 18h00  \n   - Type de chambre : Standard Double Room  \n   - Date de réservation : 28 mai 2025  \n   - Lien de l’offre : [Réserver ici](https://dayuse.com/hotels/usa/millennium-hilton-downntown)\n\nN’hésitez pas à consulter ces offres si elles correspondent à vos besoins.\n\nCordialement,  \n[Votre Nom]",
+    "timing_metrics": {
+        "get_target_customers": 32.718046,
+        "get_hotel_recommendations": 53.924683,
+        "generate_batch_mail": 19.248381
+    }
+}

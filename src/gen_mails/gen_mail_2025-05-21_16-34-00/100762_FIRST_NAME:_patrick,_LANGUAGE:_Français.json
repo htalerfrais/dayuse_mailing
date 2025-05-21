@@ -1,0 +1,10 @@
+{
+    "customer_id": 100762,
+    "customer_information": "FIRST_NAME: patrick, LANGUAGE: Français",
+    "mail": "Objet : Recommandation d'hôtels pour votre séjour le 28 mai 2025\n\nBonjour Patrick,\n\nJe souhaite vous recommander deux excellents hôtels disponibles pour une réservation le 28 mai 2025, avec des créneaux horaires adaptés pour profiter pleinement de votre journée.\n\n1. DoubleTree by Hilton Hotel Campbell - Pruneyard Plaza  \n   - Horaire d’accès : de 10h00 à 16h00  \n   - Type de chambre : Standard Double Room  \n   - Réservez ici : [DoubleTree by Hilton Hotel Campbell - Pruneyard Plaza](https://dayuse.com/hotels/usa/doubletree-by-hilton-hotel-campbell-pruneyard-plaza)\n\n2. Village Hotel Manchester Bury  \n   - Horaire d’accès : de 10h00 à 17h00  \n   - Type de chambre : Daydream in Manchester Bury  \n   - Réservez ici : [Village Hotel Manchester Bury](https://dayuse.com/hotels/united-kingdom/village-hotel-manchester-bury)\n\nN’hésitez pas à consulter ces offres pour choisir celle qui correspond le mieux à vos besoins. Je reste à votre disposition pour toute question complémentaire.\n\nCordialement,  \n[Votre nom]",
+    "timing_metrics": {
+        "get_target_customers": 25.472618,
+        "get_hotel_recommendations": 60.202085,
+        "generate_batch_mail": 9.113574
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "customer_id": 7819287,
+    "customer_information": "FIRST_NAME: Michael, LANGUAGE: Français",
+    "mail": "Objet : Recommandation d'hôtels pour une journée détente\n\nBonjour Michael,\n\nJe me permets de vous recommander deux hôtels proposant des offres intéressantes pour des séjours en journée :\n\n1. Maritim proArte Hotel Berlin  \n   - Plage horaire : 11h30 à 16h00  \n   - Type de chambre : Comfort Doppelzimmer (Day Use)  \n   - Prix : Gratuit (0,0 €)  \n   - Date de réservation : 28 mai 2025  \n   - Réservez ici : [Maritim proArte Hotel Berlin](https://dayuse.com/hotels/germany/maritim-proarte-hotel-berlin)\n\n2. ibis Oviedo  \n   - Plage horaire : 11h30 à 16h00  \n   - Type de chambre : Habitación Doble Estándar  \n   - Prix : 30,0 €  \n   - Date de réservation : 28 mai 2025  \n   - Réservez ici : [ibis Oviedo](https://dayuse.com/hotels/spain/ibis-oviedo)\n\nCes deux options vous offrent un moment de confort et de détente pendant la journée. N’hésitez pas à consulter les liens pour plus de détails et pour effectuer une réservation.\n\nBien cordialement,  \n[Votre Nom]",
+    "timing_metrics": {
+        "get_target_customers": 26.101425,
+        "get_hotel_recommendations": 37.442315,
+        "generate_batch_mail": 7.051544
+    }
+}

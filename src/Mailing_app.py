@@ -9,6 +9,8 @@ import utils.prompt_templates as prompt_templates
 import openai
 import datetime
 import pathlib
+import tkinter as tk
+from tkinter import scrolledtext
 
 
 load_dotenv()
@@ -203,7 +205,7 @@ def process_customer_ids(customer_df, prompt_template_reco):
 
 def get_target_customers(prompt_template_target_customer):
     # get the customer ids of customers that went in a hotel in Paris, France during the past 7 days
-    # and the first name of the customer
+    # and the other customer information
     payload_target_customer = create_user_payload(prompt_template_target_customer)
     analyst_response_target_customer = get_analyst_response(payload_target_customer)
     query_exec_result_target_customer = get_query_exec_result(analyst_response_target_customer)
@@ -238,7 +240,7 @@ def get_hotel_recommendations(prompt_template_recommand, query_exec_result_targe
 def generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_template_SQL, system_prompt, output_dir=None, snowflake_llm=True):
     # sql template mail is the sql query calling llm where we have to put the prompt 
     # prompt template mail is the template of the prompt sent to the llm where we have to add customer and hotel info
-    # list_customer_hotel contains the customer info and hotel recommendations
+    # list_customer_hotel contains the customer info, customer_id and hotel recommendations : it is a list of dicts
     # snowflake_llm is a boolean to choose if we use snowflake llm or openai llm
 
     generated_mails = []
@@ -274,7 +276,6 @@ def generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_templa
             # Generate the email for this customer with openai llm
             email_content = openai_llm_call(completed_mail_prompt)
 
-
         # Add to generated emails
         mail_data = {
             'customer_id': customer_id,
@@ -292,8 +293,21 @@ def generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_templa
             
             # Save the email content as JSON
             with open(filepath, 'w', encoding='utf-8') as f:
+                # Use indent=4 for readability and ensure_ascii=False to preserve unicode characters
                 json.dump(mail_data, f, indent=4, ensure_ascii=False)
-            print(f"Email saved to {filepath}")
+                
+            # For better readability, also save the email content as a plain text file
+            txt_filename = f"{customer_id}_{customer_information.replace(' ', '_')}.txt"
+            txt_filepath = os.path.join(output_dir, txt_filename)
+            with open(txt_filepath, 'w', encoding='utf-8') as f:
+                # Write the raw email content to ensure newlines are properly preserved
+                if isinstance(email_content, str):
+                    f.write(email_content)
+                else:
+                    # For complex structures (like lists or dicts), convert with readable formatting
+                    f.write(json.dumps(email_content, indent=4, ensure_ascii=False))
+                
+            print(f"Email saved to {filepath} and {txt_filepath}")
     
     return generated_mails
 
@@ -362,6 +376,18 @@ def main():
             filepath = os.path.join(output_dir, filename)
             with open(filepath, 'w', encoding='utf-8') as f:
                 json.dump(mail_data, f, indent=4, ensure_ascii=False)
+            
+            # Also save as plain text file for better readability
+            txt_filename = f"{customer_id}_{customer_information.replace(' ', '_')}.txt"
+            txt_filepath = os.path.join(output_dir, txt_filename)
+            with open(txt_filepath, 'w', encoding='utf-8') as f:
+                # Write the email content directly to the file
+                mail_content = mail_data['mail']
+                if isinstance(mail_content, str):
+                    f.write(mail_content)
+                else:
+                    # For complex structures (like lists or dicts), convert with readable formatting
+                    f.write(json.dumps(mail_content, indent=4, ensure_ascii=False))
 
     print(f"Generated {len(generated_mails)} emails. Saved to {output_dir}")
     print(f"Timing metrics: {timing_metrics}")

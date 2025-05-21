@@ -1,0 +1,10 @@
+{
+    "customer_id": 7774757,
+    "customer_information": "FIRST_NAME: Lana, LANGUAGE: Français",
+    "mail": "Objet : Suggestions d'hôtels pour votre prochain séjour\n\nBonjour Lana,\n\nJe souhaite vous recommander deux hôtels pour votre séjour, avec de bonnes options pour une chambre confortable et des horaires pratiques :\n\n1. **Hotel Movida**  \n   - Type de chambre : Camera Doppia Deluxe  \n   - Horaires : 11:00 - 17:00  \n   - Étoiles : 3  \n   - Prix : 32,00 €  \n   - Réservez ici : [Hotel Movida](https://dayuse.com/hotels/italy/hotel-movida)\n\n2. **The 29 London**  \n   - Type de chambre : Standard Double Room  \n   - Horaires : 11:00 - 17:00  \n   - Étoiles : 3  \n   - Prix : 40,00 €  \n   - Réservez ici : [The 29 London](https://dayuse.com/hotels/united-kingdom/airways-hotel-victoria)\n\nN’hésitez pas à choisir l’option qui vous convient le mieux selon vos préférences et votre budget.\n\nCordialement,  \n[Votre Nom]",
+    "timing_metrics": {
+        "get_target_customers": 28.190218,
+        "get_hotel_recommendations": 26.155326,
+        "generate_batch_mail": 3.580922
+    }
+}
