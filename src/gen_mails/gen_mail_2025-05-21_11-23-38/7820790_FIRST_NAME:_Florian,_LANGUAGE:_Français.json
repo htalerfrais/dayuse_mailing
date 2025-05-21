@@ -1,0 +1,10 @@
+{
+    "customer_id": 7820790,
+    "customer_information": "FIRST_NAME: Florian, LANGUAGE: Français",
+    "mail": "Objet : Recommandation d’hôtels pour votre séjour\n\nBonjour Florian,\n\nJe me permets de vous recommander deux excellents hôtels qui pourraient correspondre à vos attentes :\n\n1. Grand Copthorne Waterfront Hotel Singapore  \n   - Horaires : 11h00 - 19h00  \n   - Type de chambre : Grand Deluxe Room avec un crédit de 20 SGD pour la restauration  \n   - Classification : 5 étoiles\n\n2. Orchard Hotel Singapore  \n   - Horaires : 11h00 - 19h00  \n   - Type de chambre : Orchard Treasure  \n   - Classification : 5 étoiles\n\nCes deux établissements offrent des prestations de grande qualité. N’hésitez pas à me contacter si vous souhaitez davantage d’informations.\n\nCordialement,  \n[Votre Nom]",
+    "timing_metrics": {
+        "get_target_customers": 24.277825,
+        "get_hotel_recommendations": 58.102369,
+        "generate_batch_mail": 7.965769
+    }
+}

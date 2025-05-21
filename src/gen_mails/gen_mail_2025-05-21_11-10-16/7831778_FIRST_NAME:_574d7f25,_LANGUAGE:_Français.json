@@ -1,0 +1,10 @@
+{
+    "customer_id": 7831778,
+    "customer_information": "FIRST_NAME: 574d7f25, LANGUAGE: Fran\u00e7ais",
+    "mail": "Objet : Recommandation d'h\u00f4tels pour votre s\u00e9jour\n\nBonjour 574d7f25,\n\nJe me permets de vous recommander deux excellents h\u00f4tels pour votre prochain s\u00e9jour :\n\n1. voco Orchard Singapore, un h\u00f4tel IHG 5 \u00e9toiles, proposant des chambres Deluxe disponibles de 10h00 \u00e0 17h00.\n2. Sheraton Grand Salzburg, \u00e9galement un h\u00f4tel 5 \u00e9toiles, avec des chambres Standard Double disponibles aux m\u00eames horaires, de 10h00 \u00e0 17h00.\n\nCes h\u00f4tels offrent un excellent confort et un service de qualit\u00e9 qui, je suis s\u00fbr, r\u00e9pondront \u00e0 vos attentes.\n\nN\u2019h\u00e9sitez pas \u00e0 me contacter si vous souhaitez plus d\u2019informations.\n\nCordialement,  \n[Votre nom]",
+    "timing_metrics": {
+        "get_target_customers": 23.993591,
+        "get_hotel_recommendations": 48.049118,
+        "generate_batch_mail": 6.840202
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "customer_id": 7534227,
+    "customer_information": "GUEST_FIRST_NAME: Kalifa, LANGUAGE: Français",
+    "mail": "Objet : Recommandation d'hôtels pour votre séjour\n\nBonjour Kalifa,\n\nJe me permets de vous recommander deux options intéressantes pour votre séjour à l'Ocean 2 Heaven Hotel 오션2헤븐. Les deux propositions concernent le même hôtel avec le même créneau horaire de 10h00 à 17h00, mais des tarifs différents :\n\n1. Run on the House (City View) – Hôtel 3 étoiles – Prix : 112 000 ₩  \n2. Run on the House (City View) – Hôtel 3 étoiles – Prix : 82 000 ₩\n\nVous pouvez consulter et réserver ces offres via ce lien :  \nhttps://dayuse.com/hotels/south-korea/ocean-2-heaven-hotel\n\nN’hésitez pas si vous avez besoin de plus d’informations.\n\nCordialement,  \n[Votre Nom]",
+    "timing_metrics": {
+        "get_target_customers": 39.805263,
+        "get_hotel_recommendations": 22.369184,
+        "generate_batch_mail": 3.620526
+    }
+}

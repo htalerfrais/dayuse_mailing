@@ -14,14 +14,14 @@ And only rely on the information present in CUSTOMER INFORMATION. Do not halluci
 I want you to call the customer by its first name, and to use the language of the customer to write the email.
 """
 
-prompt_target_customer = """Give me 2 customer_ids of customer that went in a hotel in Paris, France during the past 7 days.
-For these customer IDs, also give the first name of the customer, and its language.
+prompt_target_customer = """Give me One customer_ids of customer that went in a hotel in Paris, France during the past 7 days.
+For this customer ID, also give the first name of the customer, and its language.
 """
 
 # May use a ML model for the recommandatioin later instead of this SQL query
 prompt_template_recommand = """Give me only 2 hotels to recommand to this customer : {customer_id}. 
 The 2 hôtels have to be available during the subsequent 7 days and for a timeslot during which the client has already historically booked an offer.
-For each hotel, give the subsequent informations : hotel name, time slot, type of room, number of stars.
+For each hotel, give the subsequent informations : hotel name, time slot, type of room, number of stars, price, and a link to the hotel.
 """
 
 prompt_template_SQL = """

@@ -291,8 +291,8 @@ def generate_batch_mail(list_customer_hotel, prompt_template_mail, prompt_templa
             filepath = os.path.join(output_dir, filename)
             
             # Save the email content as JSON
-            with open(filepath, 'w') as f:
-                json.dump(mail_data, f, indent=4)
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(mail_data, f, indent=4, ensure_ascii=False)
             print(f"Email saved to {filepath}")
     
     return generated_mails
@@ -360,8 +360,8 @@ def main():
             customer_information = mail_data['customer_information']
             filename = f"{customer_id}_{customer_information.replace(' ', '_')}.json"
             filepath = os.path.join(output_dir, filename)
-            with open(filepath, 'w') as f:
-                json.dump(mail_data, f, indent=4)
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(mail_data, f, indent=4, ensure_ascii=False)
 
     print(f"Generated {len(generated_mails)} emails. Saved to {output_dir}")
     print(f"Timing metrics: {timing_metrics}")
